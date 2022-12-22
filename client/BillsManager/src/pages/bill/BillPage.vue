@@ -16,11 +16,10 @@
 </template>
 
 <script setup lang="ts">
-	import { useMutation, useQuery } from 'vue-query'
-	import billApi from '@/services/api/billApi'
 	import BaseDialog from '@/components/BaseDialog.vue'
 	import { BillForm } from '@/components/bill'
-	import type { Bill, BillRequest } from '@/types/bill'
+	import type { BillRequest } from '@/types/bill'
+	import { useFindQuery, useUpdateQuery } from '@/composables/queries/bill'
 
 	const props = defineProps<{
 		id: string
@@ -32,17 +31,5 @@
 	const update = async (request: BillRequest) => {
 		await mutateAsync({ id: props.id, ...request })
 		refetch.value()
-	}
-
-	function useFindQuery(id: string) {
-		const queryKey = ['bill', id]
-
-		return useQuery(queryKey, () => billApi.find(id))
-	}
-
-	function useUpdateQuery() {
-		return useMutation((request: Bill) =>
-			billApi.update(request.id, request)
-		)
 	}
 </script>
