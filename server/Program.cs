@@ -46,7 +46,11 @@ billApi.MapGet("/", (BillRepository repository) =>
 
 billApi.MapGet("/{id}", (Guid id, BillRepository repository) =>
 {
-    return repository.Values.First(b => b.Id == id);
+    var result = repository.Values.First(b => b.Id == id);
+
+    result.Validate = DateTime.Now;
+
+    return result;
 });
 
 billApi.MapPut("/{id}", async (Guid id, BillRequest request, BillRepository repository) =>
@@ -101,7 +105,7 @@ internal class Bill
     public Guid Id { get; private set; }
     public string Description { get; private set; }
     public decimal Price { get; private set; }
-    public DateTime Validate { get; private set; }
+    public DateTime Validate { get; set; }
 
     public Bill(string description, decimal price, DateTime validate, Guid? id = null)
     {

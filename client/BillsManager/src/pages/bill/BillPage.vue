@@ -4,32 +4,32 @@
 		<p>Descrição: {{ bill?.description }}</p>
 		<p>Price: {{ bill?.price }}</p>
 		<p>Data de vencimento: {{ bill?.validate }}</p>
-		<BaseDialog title="Atualizar informações da Conta">
-			<template #on="{ open }">
-				<button @click="open">Atualizar informações</button>
-			</template>
+		<BaseDialog
+			title="Atualizar informações da Conta"
+			:is-showing="showDialog">
 			<template #content>
-				<BillForm :bill="bill" @aplied="update" />
+				<BillForm :bill="bill" @aplied="mutate" />
 			</template>
 		</BaseDialog>
+		<button @click="open">Atualizar informações</button>
 	</div>
 </template>
 
 <script setup lang="ts">
 	import BaseDialog from '@/components/BaseDialog.vue'
 	import { BillForm } from '@/components/bill'
-	import type { BillRequest } from '@/types/bill'
 	import { useFindQuery, useUpdateQuery } from '@/composables/queries/bill'
+	import { ref } from '@vue/reactivity'
 
 	const props = defineProps<{
 		id: string
 	}>()
 
-	const { data: bill, isLoading, refetch } = useFindQuery(props.id)
-	const { mutateAsync } = useUpdateQuery()
+	const { data: bill, isLoading } = useFindQuery(props.id)
+	const { mutate } = useUpdateQuery(props.id)
 
-	const update = async (request: BillRequest) => {
-		await mutateAsync({ id: props.id, ...request })
-		refetch.value()
+	const showDialog = ref(false)
+	const open = () => {
+		showDialog.value = !showDialog.value
 	}
 </script>
