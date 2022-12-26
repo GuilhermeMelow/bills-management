@@ -21,8 +21,10 @@ export function useRegisterBill() {
 	const register = (request: BillRequest) => billApi.register(request)
 
 	return useMutation(['billsRegister'], register, {
-		onSuccess() {
-			queryClient.invalidateQueries(['bills'])
+		onSuccess(data: Bill) {
+			queryClient.setQueryData<Bill[]>(['bills'], (oldData) => {
+				return oldData ? [...oldData, data] : [data]
+			})
 		},
 	})
 }

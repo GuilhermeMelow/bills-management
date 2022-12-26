@@ -15,9 +15,9 @@ export default {
 		return createBill(result.data)
 	},
 	async register(request: BillRequest) {
-		const result = await axios.post(URL, request)
+		const result = await axios.post<BillResult>(URL, request)
 
-		return result.data
+		return createBill(result.data)
 	},
 	async update(id: string, request: BillRequest) {
 		const result = await axios.put(`${URL}/${id}`, request)
