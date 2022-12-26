@@ -5,7 +5,6 @@ import type { Ref } from 'vue'
 
 export function useListQuery() {
 	return useQuery(['bills'], billApi.list, {
-		refetchOnWindowFocus: false,
 		refetchInterval: 300000,
 	})
 }
@@ -15,7 +14,6 @@ export function useFindQuery(id: string, enabled?: Ref<boolean>) {
 
 	return useQuery(['bills', id], () => billApi.find(id), {
 		enabled: enabled,
-		refetchOnWindowFocus: false,
 	})
 }
 
