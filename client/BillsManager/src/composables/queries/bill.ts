@@ -4,7 +4,9 @@ import type { Bill, BillRequest } from '@/types/bill'
 import type { Ref } from 'vue'
 
 export function useListQuery() {
-	return useQuery(['bills'], billApi.list)
+	return useQuery(['bills'], billApi.list, {
+		refetchOnWindowFocus: false,
+	})
 }
 
 export function useFindQuery(id: string, enabled?: Ref<boolean>) {
