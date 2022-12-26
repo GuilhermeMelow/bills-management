@@ -10,8 +10,6 @@ export function useListQuery() {
 }
 
 export function useFindQuery(id: string, enabled?: Ref<boolean>) {
-	const queryClient = useQueryClient()
-
 	return useQuery(['bills', id], () => billApi.find(id), {
 		enabled: enabled,
 	})
