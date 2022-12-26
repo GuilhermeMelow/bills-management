@@ -5,10 +5,11 @@ export function useDialog() {
 }
 
 export function useUpdateDialog() {
-	const { setQueryData } = useQueryClient()
+	const queryClient = useQueryClient()
+
 	return useMutation({
 		mutationFn: async () => {
-			setQueryData<boolean>(['dialog'], (oldData) => !oldData)
+			queryClient.setQueryData<boolean>(['dialog'], (oldData) => !oldData)
 		},
 	})
 }
