@@ -1,5 +1,15 @@
 <template>
-	<div v-if="isLoading">Carregando informações da conta a ser paga...</div>
+	<div v-if="status === 'loading'">
+		Carregando informações da conta a ser paga...
+	</div>
+	<div v-else-if="status === 'error'">
+		<h1>Ops...</h1>
+		<span>
+			Ocorreu algum erro ao tentar carregar a sua informação, peço que
+			retorne para a tela principal...
+		</span>
+		<button @click="$router.push('/')">Retornar</button>
+	</div>
 	<div v-else>
 		<p>Descrição: {{ bill?.description }}</p>
 		<p>Price: {{ bill?.price }}</p>
@@ -25,7 +35,7 @@
 		id: string
 	}>()
 
-	const { data: bill, isLoading } = useFindQuery(props.id)
+	const { data: bill, status } = useFindQuery(props.id)
 	const { mutate } = useUpdateQuery(props.id)
 
 	const showDialog = ref(false)
