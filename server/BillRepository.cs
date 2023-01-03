@@ -1,34 +1,55 @@
-﻿namespace BillsManager;
+﻿using MongoDB.Driver;
+
+namespace BillsManager;
 
 internal class BillRepository
 {
-    private readonly List<Bill> bills = new();
+    private readonly IMongoCollection<BillDbmodel> collection;
 
-    public IReadOnlyList<Bill> Values
+    public BillRepository(MongoClient client)
     {
-        get => bills;
+        var db = client.GetDatabase("BillsManager");
+
+        collection = db.GetCollection<BillDbmodel>("Bill");
     }
 
-    public Task Add(Bill bill)
+    public IEnumerable<Bill> List()
     {
-        bills.Add(bill);
+        var result = collection.Aggregate().ToList();
 
-        return Task.CompletedTask;
+        if (result is null) return Enumerable.Empty<Bill>();
+
+        return result.Select(c => new Bill(c.Description, c.Price, c.Validate, c.Id));
     }
 
-    public Task Update(Bill bill)
+    public void Add(Bill bill)
     {
-        int index = bills.FindIndex(c => c.Id == bill.Id);
+        var document = new BillDbmodel
+        {
+            Id = bill.Id,
+            Validate = bill.Validate,
+            Price = bill.Price,
+            Description = bill.Description,
+        };
 
-        bills[index] = bill;
-
-        return Task.CompletedTask;
+        collection.InsertOne(document);
     }
 
-    public Task Remove(Bill bill)
+    public void Update(Bill bill)
     {
-        bills.Remove(bill);
+        var document = new BillDbmodel
+        {
+            Id = bill.Id,
+            Validate = bill.Validate,
+            Price = bill.Price,
+            Description = bill.Description,
+        };
 
-        return Task.CompletedTask;
+        collection.ReplaceOne(c => c.Id == bill.Id, document);
+    }
+
+    public void Remove(Bill bill)
+    {
+        collection.DeleteOne(c => c.Id == bill.Id);
     }
 }

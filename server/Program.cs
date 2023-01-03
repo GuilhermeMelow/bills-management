@@ -1,4 +1,5 @@
 using BillsManager;
+using MongoDB.Driver;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSingleton<BillRepository>();
+builder.Services.AddSingleton(new MongoClient());
 
 WebApplication app = builder.Build();
 

@@ -12,7 +12,5 @@
 </template>
 
 <script setup lang="ts">
-	import { ref } from '@vue/reactivity'
-
-	const props = defineProps<{ title: string; isShowing: boolean }>()
+	defineProps<{ title: string; isShowing: boolean }>()
 </script>
