@@ -26,7 +26,8 @@
 
 <script setup lang="ts">
 	import type { BillRequest } from '@/types/bill'
-	import { watch, shallowRef } from '@vue/runtime-core'
+	import { shallowRef, watchEffect } from '@vue/runtime-core'
+
 	import BaseDateInput from '../BaseDateInput.vue'
 
 	interface Props {
@@ -41,22 +42,14 @@
 
 	const model = shallowRef(createBill())
 
-	watch(
-		() => props.bill,
-		(value) => {
-			model.value = createBill(value)
-		},
-		{ immediate: true }
-	)
+	watchEffect(() => (model.value = createBill(props.bill)))
 
-	function createBill(bill?: BillRequest): BillRequest {
-		return Object.assign(
-			{
-				description: '',
-				price: 0,
-				validate: new Date(),
-			},
-			bill
-		)
+	function createBill(billRequest?: BillRequest): BillRequest {
+		const bill = {
+			description: '',
+			price: 0,
+			validate: new Date(),
+		}
+		return Object.assign(bill, billRequest)
 	}
 </script>
