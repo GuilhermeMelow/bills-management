@@ -1,44 +1,45 @@
-﻿namespace BillsManager
+﻿namespace BillsManager;
+
+internal static class BillEndpointsExtension
 {
-    internal static class BillEndpointsExtension
+    public static void MapBillEndpoints(this WebApplication app)
     {
-        public static void MapBillEndpoints(this WebApplication app)
+        RouteGroupBuilder router = app.MapGroup("/api/bill");
+
+        router.MapPost("/", async (BillRequest request, BillRepository repository) =>
         {
-            var billApi = app.MapGroup("/api/bill");
+            (string description, decimal price, DateTime validate) = request;
+            Bill bill = new(description, price, validate);
 
-            billApi.MapPost("/", async (BillRequest request, BillRepository repository) =>
-            {
-                var (description, price, validate) = request;
-                var bill = new Bill(description, price, validate);
+            await repository.Add(bill);
 
-                await repository.Add(bill);
+            return Results.Created($"/api/bill/{bill.Id}", bill);
+        });
 
-                return Results.Created($"/api/bill/{bill.Id}", bill);
-            });
+        router.MapGet("/", (BillRepository repository) =>
+        {
+            return Results.Ok(repository.Values);
+        });
 
-            billApi.MapGet("/", (BillRepository repository) =>
-            {
-                return Results.Ok(repository.Values);
-            });
+        router.MapGet("/{id}", (Guid id, BillRepository repository) =>
+        {
+            Bill result = repository.Values.First(b => b.Id == id);
 
-            billApi.MapGet("/{id}", (Guid id, BillRepository repository) =>
-            {
-                var result = repository.Values.First(b => b.Id == id);
+            result.Validate = DateTime.Now;
 
-                result.Validate = DateTime.Now;
+            return result;
+        });
 
-                return result;
-            });
+        router.MapPut("/{id}", async (Guid id, BillRequest request, BillRepository repository) =>
+        {
+            (string description, decimal price, DateTime validate) = request;
+            Bill bill = new(description, price, validate, id);
 
-            billApi.MapPut("/{id}", async (Guid id, BillRequest request, BillRepository repository) =>
-            {
-                var (description, price, validate) = request;
-                var bill = new Bill(description, price, validate, id);
+            await repository.Update(bill);
 
-                await repository.Update(bill);
-
-                return Results.Accepted();
-            });
-        }
+            return Results.Accepted();
+        });
     }
+
+    private record BillRequest(string Description, decimal Price, DateTime Validate);
 }

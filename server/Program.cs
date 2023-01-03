@@ -1,11 +1,11 @@
 using BillsManager;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var MY_CORS_POLICY = "MyPolicy";
+string MY_CORS_POLICY = "MyPolicy";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MY_CORS_POLICY, policy =>
@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSingleton<BillRepository>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
@@ -32,5 +32,3 @@ app.UseHttpsRedirection();
 app.MapBillEndpoints();
 
 app.Run();
-
-internal record BillRequest(string Description, decimal Price, DateTime Validate);
