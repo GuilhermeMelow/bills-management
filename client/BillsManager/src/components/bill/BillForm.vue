@@ -44,7 +44,6 @@
 	watch(
 		() => props.bill,
 		(value) => {
-			console.log(value)
 			model.value = createBill(value)
 		},
 		{ immediate: true }

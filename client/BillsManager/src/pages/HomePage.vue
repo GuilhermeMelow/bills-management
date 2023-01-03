@@ -8,12 +8,15 @@
 	</div>
 	<div v-else>
 		<button @click="refetch()">Recarregar</button>
-		<BaseDialog title="Registrar conta" :is-showing="showDialog ?? false">
+		<BaseDialog title="Registrar conta">
+			<template #on="{ open }">
+				<button @click="open">Abrir</button>
+			</template>
 			<template #content>
 				<BillForm :loading="loadingRegister" @aplied="mutate" />
 			</template>
 		</BaseDialog>
-		<button @click="open()">Abrir</button>
+
 		<BillList
 			:bills="bills"
 			@clicked="({ id }) => $router.push(`/bill/${id}`)" />
@@ -24,7 +27,6 @@
 	import { BillForm, BillList } from '@/components/bill'
 	import { defineAsyncComponent } from '@vue/runtime-core'
 	import { useListQuery, useRegisterBill } from '@/composables/queries/bill'
-	import { useDialog, useUpdateDialog } from '@/composables/queries/dialog'
 
 	const BaseDialog = defineAsyncComponent(
 		() => import('@/components/BaseDialog.vue')
@@ -32,7 +34,4 @@
 
 	const { data: bills, status: listStatus, refetch } = useListQuery()
 	const { mutate, isLoading: loadingRegister } = useRegisterBill()
-
-	const { data: showDialog } = useDialog()
-	const { mutate: open } = useUpdateDialog()
 </script>

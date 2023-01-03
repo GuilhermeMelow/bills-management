@@ -14,14 +14,14 @@
 		<p>Descrição: {{ bill?.description }}</p>
 		<p>Price: {{ bill?.price }}</p>
 		<p>Data de vencimento: {{ bill?.validate }}</p>
-		<BaseDialog
-			title="Atualizar informações da Conta"
-			:is-showing="showDialog ?? false">
+		<BaseDialog title="Atualizar informações da Conta">
+			<template #on="{ open }">
+				<button @click="open()">Atualizar informações</button>
+			</template>
 			<template #content>
 				<BillForm :bill="bill" @aplied="mutate" />
 			</template>
 		</BaseDialog>
-		<button @click="open()">Atualizar informações</button>
 	</div>
 </template>
 
@@ -29,7 +29,6 @@
 	import BaseDialog from '@/components/BaseDialog.vue'
 	import { BillForm } from '@/components/bill'
 	import { useFindQuery, useUpdateQuery } from '@/composables/queries/bill'
-	import { useDialog, useUpdateDialog } from '@/composables/queries/dialog'
 
 	const props = defineProps<{
 		id: string
@@ -37,7 +36,4 @@
 
 	const { data: bill, status } = useFindQuery(props.id)
 	const { mutate } = useUpdateQuery(props.id)
-
-	const { data: showDialog } = useDialog()
-	const { mutate: open } = useUpdateDialog()
 </script>
