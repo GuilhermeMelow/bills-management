@@ -6,7 +6,7 @@ internal static class BillEndpointsExtension
     {
         RouteGroupBuilder router = app.MapGroup("/api/bill");
 
-        router.MapPost("/", async (BillRequest request, BillRepository repository) =>
+        router.MapPost("/", (BillRequest request, BillRepository repository) =>
         {
             (string description, decimal price, DateTime validate) = request;
             var bill = new Bill(description, price, validate);
@@ -26,7 +26,7 @@ internal static class BillEndpointsExtension
             return repository.List().First(b => b.Id == id);
         });
 
-        router.MapPut("/{id}", async (Guid id, BillRequest request, BillRepository repository) =>
+        router.MapPut("/{id}", (Guid id, BillRequest request, BillRepository repository) =>
         {
             (string description, decimal price, DateTime validate) = request;
             Bill bill = new(description, price, validate, id);
