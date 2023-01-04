@@ -6,3 +6,7 @@ export const BillForm = defineAsyncComponent(
 export const BillList = defineAsyncComponent(
 	() => import('@/components/bill/BillList.vue')
 )
+
+export const BillDescriptor = defineAsyncComponent(
+	() => import('@/components/bill/BillDescriptor.vue')
+)

@@ -11,9 +11,7 @@
 		<button @click="$router.push('/')">Retornar</button>
 	</div>
 	<div v-else>
-		<p>Descrição: {{ bill?.description }}</p>
-		<p>Price: {{ bill?.price }}</p>
-		<p>Data de vencimento: {{ bill?.validate }}</p>
+		<BillDescriptor :bill="bill" />
 		<BaseDialog title="Atualizar informações da Conta">
 			<template #on="{ open }">
 				<button @click="open()">Atualizar informações</button>
@@ -27,7 +25,7 @@
 
 <script setup lang="ts">
 	import BaseDialog from '@/components/BaseDialog.vue'
-	import { BillForm } from '@/components/bill'
+	import { BillForm, BillDescriptor } from '@/components/bill'
 	import { useFindQuery, useUpdateQuery } from '@/composables/queries/bill'
 
 	const props = defineProps<{
