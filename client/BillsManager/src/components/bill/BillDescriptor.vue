@@ -3,7 +3,7 @@
 	<div v-else>
 		<p>Descrição: {{ bill?.description }}</p>
 		<p>Price: {{ bill?.price }}</p>
-		<p>Data de vencimento: {{ bill?.validate }}</p>
+		<p>Data de vencimento: {{ bill?.dueDate }}</p>
 	</div>
 </template>
 

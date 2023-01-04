@@ -8,7 +8,7 @@ internal static class BillEndpointsExtension
 
         router.MapPost("/", (BillRequest request, BillRepository repository) =>
         {
-            (string description, decimal price, DateTime validate) = request;
+            var (description, price, validate) = request;
             var bill = new Bill(description, price, validate);
 
             repository.Add(bill);
@@ -28,8 +28,8 @@ internal static class BillEndpointsExtension
 
         router.MapPut("/{id}", (Guid id, BillRequest request, BillRepository repository) =>
         {
-            (string description, decimal price, DateTime validate) = request;
-            Bill bill = new(description, price, validate, id);
+            var (description, price, validate) = request;
+            var bill = new Bill(description, price, validate, id);
 
             repository.Update(bill);
 
@@ -37,5 +37,5 @@ internal static class BillEndpointsExtension
         });
     }
 
-    private record BillRequest(string Description, decimal Price, DateTime Validate);
+    private record BillRequest(string Description, decimal Price, int DueDate);
 }

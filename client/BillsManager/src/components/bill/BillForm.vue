@@ -16,7 +16,10 @@
 		</div>
 		<div>
 			<label>Data de vencimento</label>
-			<BaseDateInput v-model:date="model.validate" />
+			<input
+				v-model="model.dueDate"
+				type="number"
+				placeholder="Coloquei um número entre 0 a 20..." />
 		</div>
 		<button :disabled="loading" @click="$emit('aplied', model)">
 			Aplicar
@@ -27,8 +30,6 @@
 <script setup lang="ts">
 	import { createBill, type BillRequest } from '@/types/bill'
 	import { shallowRef, watchEffect } from '@vue/runtime-core'
-
-	import BaseDateInput from '../BaseDateInput.vue'
 
 	interface Props {
 		bill?: BillRequest

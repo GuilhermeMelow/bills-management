@@ -2,27 +2,20 @@ export interface Bill {
 	id: string
 	description: string
 	price: number
-	validate: Date
+	dueDate: number
 }
 
 export interface BillRequest {
 	description: string
 	price: number
-	validate: Date
-}
-
-export interface BillResult {
-	id: string
-	description: string
-	price: number
-	validate: string
+	dueDate: number
 }
 
 export function createBill(billRequest?: BillRequest): BillRequest {
 	const bill = {
 		description: '',
 		price: 0,
-		validate: new Date(),
+		dueDate: new Date(),
 	}
 	return Object.assign(bill, billRequest)
 }

@@ -1,34 +1,27 @@
-import type { Bill, BillRequest, BillResult } from '@/types/bill'
+import type { Bill, BillRequest } from '@/types/bill'
 import axios from 'axios'
 
 const URL = 'https://localhost:7266/api/bill'
 
 export default {
-	async list(): Promise<Bill[]> {
-		const result = await axios.get<BillResult[]>(URL)
+	async list() {
+		const result = await axios.get<Bill[]>(URL)
 
-		return result.data.map(createBill)
+		return result.data
 	},
-	async find(id: string): Promise<Bill> {
-		const result = await axios.get<BillResult>(`${URL}/${id}`)
+	async find(id: string) {
+		const result = await axios.get<Bill>(`${URL}/${id}`)
 
-		return createBill(result.data)
+		return result.data
 	},
 	async register(request: BillRequest) {
-		const result = await axios.post<BillResult>(URL, request)
+		const result = await axios.post<Bill>(URL, request)
 
-		return createBill(result.data)
+		return result.data
 	},
 	async update(id: string, request: BillRequest) {
 		const result = await axios.put(`${URL}/${id}`, request)
 
 		return result.data
 	},
-}
-
-function createBill(result: BillResult): Bill {
-	return {
-		...result,
-		validate: new Date(result.validate),
-	}
 }
