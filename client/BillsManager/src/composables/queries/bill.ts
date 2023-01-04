@@ -4,13 +4,17 @@ import type { Bill, BillRequest } from '@/types/bill'
 import type { Ref } from 'vue'
 
 export function useListQuery() {
-	return useQuery(['bills'], billApi.list, {
+	return useQuery({
+		queryKey: ['bills'],
+		queryFn: billApi.list,
 		refetchInterval: 300000,
 	})
 }
 
 export function useFindQuery(id: string, enabled?: Ref<boolean>) {
-	return useQuery(['bills', id], () => billApi.find(id), {
+	return useQuery({
+		queryKey: ['bills', id],
+		queryFn: () => billApi.find(id),
 		enabled: enabled,
 	})
 }
@@ -18,10 +22,10 @@ export function useFindQuery(id: string, enabled?: Ref<boolean>) {
 export function useRegisterBill() {
 	const queryClient = useQueryClient()
 
-	const register = (request: BillRequest) => billApi.register(request)
-
-	return useMutation(['billsRegister'], register, {
-		onSuccess(data: Bill) {
+	return useMutation({
+		mutationKey: ['billsRegister'],
+		mutationFn: (request: BillRequest) => billApi.register(request),
+		onSuccess: (data: Bill) => {
 			queryClient.setQueryData<Bill[]>(['bills'], (oldData) => {
 				return oldData ? [...oldData, data] : [data]
 			})
@@ -32,10 +36,10 @@ export function useRegisterBill() {
 export function useUpdateQuery(id: string) {
 	const queryClient = useQueryClient()
 
-	const update = (request: BillRequest) => billApi.update(id, request)
-
-	return useMutation(['billsUpdate', id], update, {
-		onSuccess(_, variables) {
+	return useMutation({
+		mutationKey: ['billsUpdate', id],
+		mutationFn: (request: BillRequest) => billApi.update(id, request),
+		onSuccess: (_, variables) => {
 			queryClient.setQueryData(['bills', id], { id, ...variables })
 		},
 	})
