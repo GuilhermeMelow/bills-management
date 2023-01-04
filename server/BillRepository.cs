@@ -19,7 +19,7 @@ internal class BillRepository
 
         if (result is null) return Enumerable.Empty<Bill>();
 
-        return result.Select(c => new Bill(c.Description, c.Price, c.Validate, c.Id));
+        return result.Select(c => new Bill(c.Description, c.Price, c.DueDate, c.Id));
     }
 
     public void Add(Bill bill)
@@ -27,7 +27,7 @@ internal class BillRepository
         var document = new BillDbmodel
         {
             Id = bill.Id,
-            Validate = bill.Validate,
+            DueDate = bill.DueDate,
             Price = bill.Price,
             Description = bill.Description,
         };
@@ -40,7 +40,7 @@ internal class BillRepository
         var document = new BillDbmodel
         {
             Id = bill.Id,
-            Validate = bill.Validate,
+            DueDate = bill.DueDate,
             Price = bill.Price,
             Description = bill.Description,
         };
