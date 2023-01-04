@@ -17,3 +17,12 @@ export interface BillResult {
 	price: number
 	validate: string
 }
+
+export function createBill(billRequest?: BillRequest): BillRequest {
+	const bill = {
+		description: '',
+		price: 0,
+		validate: new Date(),
+	}
+	return Object.assign(bill, billRequest)
+}

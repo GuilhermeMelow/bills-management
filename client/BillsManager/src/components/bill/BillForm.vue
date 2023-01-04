@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<form @submit.prevent>
 		<div>
 			<label>Descrição</label>
 			<input
@@ -21,11 +21,11 @@
 		<button :disabled="loading" @click="$emit('aplied', model)">
 			Aplicar
 		</button>
-	</div>
+	</form>
 </template>
 
 <script setup lang="ts">
-	import type { BillRequest } from '@/types/bill'
+	import { createBill, type BillRequest } from '@/types/bill'
 	import { shallowRef, watchEffect } from '@vue/runtime-core'
 
 	import BaseDateInput from '../BaseDateInput.vue'
@@ -34,7 +34,6 @@
 		bill?: BillRequest
 		loading?: boolean
 	}
-
 	const props = withDefaults(defineProps<Props>(), {
 		loading: false,
 	})
@@ -43,13 +42,4 @@
 	const model = shallowRef(createBill())
 
 	watchEffect(() => (model.value = createBill(props.bill)))
-
-	function createBill(billRequest?: BillRequest): BillRequest {
-		const bill = {
-			description: '',
-			price: 0,
-			validate: new Date(),
-		}
-		return Object.assign(bill, billRequest)
-	}
 </script>
