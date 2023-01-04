@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<div v-if="isLoading">Carregando informações da conta a ser paga...</div>
+	<div v-else>
 		<p>Descrição: {{ bill?.description }}</p>
 		<p>Price: {{ bill?.price }}</p>
 		<p>Data de vencimento: {{ bill?.validate }}</p>
@@ -7,7 +8,9 @@
 </template>
 
 <script lang="ts" setup>
-	import type { Bill } from '@/types/bill'
+	import { useFindQuery } from '@/composables/queries/bill'
 
-	defineProps<{ bill?: Bill }>()
+	const props = defineProps<{ id: string }>()
+
+	const { data: bill, isLoading } = useFindQuery(props.id)
 </script>

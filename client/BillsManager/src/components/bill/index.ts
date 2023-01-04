@@ -10,3 +10,7 @@ export const BillList = defineAsyncComponent(
 export const BillDescriptor = defineAsyncComponent(
 	() => import('@/components/bill/BillDescriptor.vue')
 )
+
+export const BillUpdateDialog = defineAsyncComponent(
+	() => import('@/components/bill/BillUpdateDialog.vue')
+)

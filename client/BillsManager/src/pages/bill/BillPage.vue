@@ -1,37 +1,12 @@
 <template>
-	<div v-if="status === 'loading'">
-		Carregando informações da conta a ser paga...
-	</div>
-	<div v-else-if="status === 'error'">
-		<h1>Ops...</h1>
-		<span>
-			Ocorreu algum erro ao tentar carregar a sua informação, peço que
-			retorne para a tela principal...
-		</span>
-		<button @click="$router.push('/')">Retornar</button>
-	</div>
-	<div v-else>
-		<BillDescriptor :bill="bill" />
-		<BaseDialog title="Atualizar informações da Conta">
-			<template #on="{ open }">
-				<button @click="open()">Atualizar informações</button>
-			</template>
-			<template #content>
-				<BillForm :bill="bill" @aplied="mutate" />
-			</template>
-		</BaseDialog>
+	<div>
+		<BillDescriptor :id="id" />
+		<BillUpdateDialog :id="id" />
 	</div>
 </template>
 
 <script setup lang="ts">
-	import BaseDialog from '@/components/BaseDialog.vue'
-	import { BillForm, BillDescriptor } from '@/components/bill'
-	import { useFindQuery, useUpdateQuery } from '@/composables/queries/bill'
+	import { BillDescriptor, BillUpdateDialog } from '@/components/bill'
 
-	const props = defineProps<{
-		id: string
-	}>()
-
-	const { data: bill, status } = useFindQuery(props.id)
-	const { mutate } = useUpdateQuery(props.id)
+	defineProps<{ id: string }>()
 </script>
