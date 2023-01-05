@@ -15,7 +15,8 @@ export function createBill(billRequest?: BillRequest): BillRequest {
 	const bill = {
 		description: '',
 		price: 0,
-		dueDate: new Date(),
+		dueDate: 0,
 	}
+
 	return Object.assign(bill, billRequest)
 }
