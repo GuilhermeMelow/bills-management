@@ -5,23 +5,29 @@
 			<input
 				v-model="model.description"
 				type="text"
-				placeholder="Descreva a conta..." />
+				placeholder="Descreva a conta..."
+				data-testid="input-descricao" />
 		</div>
 		<div>
 			<label>Preço</label>
 			<input
 				v-model="model.price"
 				type="number"
-				placeholder="Descreva o valor da conta..." />
+				placeholder="Descreva o valor da conta..."
+				data-testid="input-preco" />
 		</div>
 		<div>
 			<label>Data de vencimento</label>
 			<input
 				v-model="model.dueDate"
 				type="number"
-				placeholder="Coloquei um número entre 0 a 20..." />
+				placeholder="Coloquei um número entre 0 a 20..."
+				data-testid="input-vencimento" />
 		</div>
-		<button :disabled="loading" @click="$emit('aplied', model)">
+		<button
+			:disabled="loading"
+			data-testid="button-apply"
+			@click="$emit('applied', model)">
 			Aplicar
 		</button>
 	</form>
@@ -38,7 +44,7 @@
 	const props = withDefaults(defineProps<Props>(), {
 		loading: false,
 	})
-	defineEmits<{ (e: 'aplied', bill: BillRequest): void }>()
+	defineEmits<{ (e: 'applied', bill: BillRequest): void }>()
 
 	const model = shallowRef(createBill())
 
