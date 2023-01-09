@@ -1,9 +1,18 @@
 <template>
 	<div v-if="isLoading">Carregando informações da conta a ser paga...</div>
 	<div v-else>
-		<p>Descrição: {{ bill?.description }}</p>
-		<p>Price: {{ bill?.price }}</p>
-		<p>Data de vencimento: {{ bill?.dueDate }}</p>
+		<p>
+			Descrição:
+			<span data-testid="description">{{ bill?.description }}</span>
+		</p>
+		<p>
+			Price:
+			<span data-testid="price">{{ bill?.price }}</span>
+		</p>
+		<p>
+			Data de vencimento:
+			<span data-testid="dueDate">{{ bill?.dueDate }}</span>
+		</p>
 	</div>
 </template>
 
