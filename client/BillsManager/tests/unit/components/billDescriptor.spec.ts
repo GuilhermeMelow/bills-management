@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { render } from '@testing-library/vue'
 
 import BillDescriptor from '../../../src/components/bill/BillDescriptor.vue'
@@ -11,14 +11,20 @@ const bills = [
 		price: 180,
 	},
 ]
-vi.mock('../../../src/composables/queries/bill', () => ({
-	useFindQuery(id: string) {
-		return {
-			data: bills.find((c) => c.id === id),
-			isLoading: false,
-		}
-	},
-}))
+
+beforeAll(() => {
+	vi.mock('../../../src/composables/queries/bill', () => ({
+		useFindQuery(id: string) {
+			return {
+				data: bills.find((c) => c.id === id),
+				isLoading: false,
+			}
+		},
+	}))
+})
+afterAll(() => {
+	vi.unmock('../../../src/composables/queries/bill')
+})
 
 describe('BillDescriptor.vue', () => {
 	it('When passed the bill Id, should show the description for the bill id passed', () => {
