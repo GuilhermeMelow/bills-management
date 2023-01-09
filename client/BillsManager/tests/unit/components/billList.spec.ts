@@ -1,32 +1,54 @@
-import { fireEvent, render, RenderResult } from '@testing-library/vue'
-import { expect, it, describe, vi, beforeEach, Mock } from 'vitest'
-import { useListQuery } from '../../../src/composables/queries/bill'
+import { fireEvent, render } from '@testing-library/vue'
+import { expect, it, describe, vi, afterAll, beforeAll } from 'vitest'
 
 import BillList from '../../../src/components/bill/BillList.vue'
 
-vi.mock('../../../src/composables/queries/bill', async () => {
-	const data = [
-		{
-			id: '1',
-			description: 'Bill Teste',
-			dueDate: 10,
-			price: 180,
-		},
-	]
+const refetch = vi.fn(() => {})
+const data = [
+	{
+		id: '1',
+		description: 'Bill Teste',
+		dueDate: 10,
+		price: 180,
+	},
+]
 
-	return {
+beforeAll(() => {
+	vi.mock('../../../src/composables/queries/bill', () => ({
 		useListQuery: () => ({
 			data,
 			status: 'success',
-			refetch: vi.fn(),
+			refetch,
 		}),
-	}
+	}))
+})
+afterAll(() => {
+	vi.unmock('../../../src/composables/queries/bill')
 })
 
 describe('WhiteBox BillList.vue', () => {
-	it('some test', async () => {
-		const result: RenderResult = render(BillList)
+	it('When BillList has been rendered, should show the bills too', () => {
+		// Arrange & Act
+		const result = render(BillList)
 
-		expect(result.getByTestId('div-list').childElementCount).gt(0)
+		// Assert
+		const list = result.getByTestId('div-list')
+		expect(list.childElementCount).gt(0)
+
+		const item = data[0]
+		const itemElement = result.getByTestId(`item-${item.id}`)
+		expect(item.description).toBe(itemElement.textContent)
+	})
+
+	it('When reload button was click, refetch fuction should be called', async () => {
+		// Arrange
+		const result = render(BillList)
+		const button = result.getByTestId('button-reload')
+
+		// Act
+		await fireEvent.click(button)
+
+		// Assert
+		expect(refetch).toHaveBeenCalledTimes(1)
 	})
 })

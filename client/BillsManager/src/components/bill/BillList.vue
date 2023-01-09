@@ -11,7 +11,7 @@
 			<li
 				v-for="{ id, description } in bills"
 				:key="id"
-				:data-testeId="`item-${id}`"
+				:data-testId="`item-${id}`"
 				@clicked="$router.push(`/bill/${id}`)">
 				{{ description }}
 			</li>
