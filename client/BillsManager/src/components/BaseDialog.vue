@@ -1,6 +1,6 @@
 <template>
 	<slot name="on" :open="open" />
-	<dialog :open="isShowing">
+	<div v-if="isShowing" data-testid="dialog">
 		<div v-if="loading">
 			<slot name="loading">Carregando informações...</slot>
 		</div>
@@ -12,7 +12,7 @@
 				<slot name="content">Sem conteúdo...</slot>
 			</div>
 		</div>
-	</dialog>
+	</div>
 </template>
 
 <script setup lang="ts">

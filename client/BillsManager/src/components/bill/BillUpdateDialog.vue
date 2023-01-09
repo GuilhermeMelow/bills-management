@@ -1,10 +1,12 @@
 <template>
 	<BaseDialog title="Atualizar informações da Conta" :loading="isLoading">
 		<template #on="{ open }">
-			<button @click="open()">Atualizar informações</button>
+			<button data-testId="button-update" @click="open()">
+				Atualizar informações
+			</button>
 		</template>
 		<template #content>
-			<BillForm :bill="bill" @aplied="mutate" />
+			<BillForm :bill="bill" @applied="mutate" />
 		</template>
 		<template #loading>
 			<div>Carregando informações da conta à serem atualizadas...</div>

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { BillRequest, createBill } from '../../../src/types/bill'
+import { createBill } from '../../../src/types/bill'
 
 describe('createBill()', () => {
 	it('When createBill receive arguments, should return the same data in result', () => {

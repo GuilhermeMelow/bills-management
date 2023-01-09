@@ -1,21 +1,26 @@
 <template>
-	<li v-for="bill in bills" :key="bill.id" @click="$emit('clicked', bill)">
-		{{ bill.description }}
-	</li>
+	<div v-if="listStatus === 'loading'">Carregando as contas...</div>
+	<div v-else-if="listStatus === 'error'">
+		Ocorreu algum erro ao tentar carregar...
+	</div>
+	<div>
+		<button data-testid="button-reload" @click="refetch()">
+			Recarregar
+		</button>
+		<div data-testid="div-list">
+			<li
+				v-for="{ id, description } in bills"
+				:key="id"
+				:data-testId="`item-${id}`"
+				@clicked="$router.push(`/bill/${id}`)">
+				{{ description }}
+			</li>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
-	import type { Bill } from '@/types/bill'
+	import { useListQuery } from '@/composables/queries/bill'
 
-	interface Props {
-		bills?: Bill[]
-	}
-
-	withDefaults(defineProps<Props>(), {
-		bills: () => [],
-	})
-
-	defineEmits<{
-		(e: 'clicked', bill: Bill): void
-	}>()
+	const { data: bills, status: listStatus, refetch } = useListQuery()
 </script>
