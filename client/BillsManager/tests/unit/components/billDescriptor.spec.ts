@@ -21,13 +21,15 @@ vi.mock('../../../src/composables/queries/bill', () => ({
 }))
 
 describe('BillDescriptor.vue', () => {
-	it('x', () => {
+	it('When passed the bill Id, should show the description for the bill id passed', () => {
+		// Arrange
 		const { getByTestId } = render(BillDescriptor, {
 			props: {
 				id: bills[0].id,
 			},
 		})
 
+		// Act
 		const bill = {
 			id: bills[0].id,
 			description: getByTestId('description').textContent,
@@ -35,6 +37,7 @@ describe('BillDescriptor.vue', () => {
 			dueDate: Number(getByTestId('dueDate').textContent),
 		}
 
+		// Assert
 		expect(bill).toMatchObject(bills[0])
 	})
 })
