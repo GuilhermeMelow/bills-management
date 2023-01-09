@@ -4,19 +4,6 @@ import { fireEvent, render, waitFor } from '@testing-library/vue'
 
 import BillUpdateDialog from '../../../src/components/bill/BillUpdateDialog.vue'
 
-const mutate = vi.fn((bill: BillRequest) => {
-	return bill
-})
-
-const bills = [
-	{
-		id: '1',
-		description: 'Bill Teste',
-		dueDate: 10,
-		price: 180,
-	},
-]
-
 describe('(BlackBox) BillUpdateDialog.vue', () => {
 	const setup = () => {
 		return render(BillUpdateDialog, {
@@ -111,20 +98,31 @@ describe('(BlackBox) BillUpdateDialog.vue', () => {
 	})
 })
 
+const mutate = vi.fn((bill: BillRequest) => {
+	return bill
+})
+
+const bills = [
+	{
+		id: '1',
+		description: 'Bill Teste',
+		dueDate: 10,
+		price: 180,
+	},
+]
+
 beforeAll(() => {
-	vi.mock('../../../src/composables/queries/bill', () => {
-		return {
-			useFindQuery(id: string) {
-				return {
-					data: bills.find((b) => b.id === id),
-					isLoading: false,
-				}
-			},
-			useUpdateQuery() {
-				return { mutate }
-			},
-		}
-	})
+	vi.mock('../../../src/composables/queries/bill', () => ({
+		useFindQuery(id: string) {
+			return {
+				data: bills.find((b) => b.id === id),
+				isLoading: false,
+			}
+		},
+		useUpdateQuery() {
+			return { mutate }
+		},
+	}))
 })
 afterAll(() => {
 	vi.unmock('../../../src/composables/queries/bill')

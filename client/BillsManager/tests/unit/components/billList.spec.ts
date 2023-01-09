@@ -3,29 +3,6 @@ import { expect, it, describe, vi, afterAll, beforeAll } from 'vitest'
 
 import BillList from '../../../src/components/bill/BillList.vue'
 
-const refetch = vi.fn(() => {})
-const data = [
-	{
-		id: '1',
-		description: 'Bill Teste',
-		dueDate: 10,
-		price: 180,
-	},
-]
-
-beforeAll(() => {
-	vi.mock('../../../src/composables/queries/bill', () => ({
-		useListQuery: () => ({
-			data,
-			status: 'success',
-			refetch,
-		}),
-	}))
-})
-afterAll(() => {
-	vi.unmock('../../../src/composables/queries/bill')
-})
-
 describe('WhiteBox BillList.vue', () => {
 	it('When BillList has been rendered, should show the bills too', () => {
 		// Arrange & Act
@@ -51,4 +28,27 @@ describe('WhiteBox BillList.vue', () => {
 		// Assert
 		expect(refetch).toHaveBeenCalledTimes(1)
 	})
+})
+
+const refetch = vi.fn(() => {})
+const data = [
+	{
+		id: '1',
+		description: 'Bill Teste',
+		dueDate: 10,
+		price: 180,
+	},
+]
+
+beforeAll(() => {
+	vi.mock('../../../src/composables/queries/bill', () => ({
+		useListQuery: () => ({
+			data,
+			status: 'success',
+			refetch,
+		}),
+	}))
+})
+afterAll(() => {
+	vi.unmock('../../../src/composables/queries/bill')
 })
